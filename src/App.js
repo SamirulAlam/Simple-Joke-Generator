@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-import { useEffect,useState } from 'react';
+import React, { useState } from 'react'
+import "./App.css"
 
-function App() {
-  const [state, setstate] = useState(" ")
-  
-//  useEffect(()=>{
+const App = () => {
+  const [joke, setJoke] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName]= useState("");
 
-
-//    joke()
-//  },[])
-
-
- const joke =async ()=>{await fetch("https://api.icndb.com/jokes/random").then(res=>res.json()).then(({value})=>{setstate(value.joke)})}
-    return (
-      <>
-        <h1>{state}</h1>
-        <button onClick={joke}>click me</button>
-      </>
-    
-  );
+  const fetchJoke =async ()=>{await fetch(`https://api.icndb.com/jokes/random?firstName=${firstName}&lastName=${lastName}`)
+    .then(res=>res.json())
+    .then(({value})=>{
+        setJoke(value.joke)
+    })}
+  return (
+    <div className="app">
+        <div className="app__joke">
+          <h1>{joke}</h1>
+        </div>
+        <div className="app__form">
+            <form>
+                <input type="text" value={firstName} onChange={e=>setFirstName(e.target.value)} />
+                <input type="text" value={lastName} onChange={e=>setLastName(e.target.value)} />
+            </form>
+        </div>
+        <div className="app__button">
+        <button onClick={fetchJoke}>click me</button>
+        </div>
+    </div>
+  )
 }
 
-export default App;
+export default App
