@@ -24,7 +24,7 @@
     margin: 5px;
 }
 
-.app__button > button{
+.app__form > form > button{
   background: transparent;
   color: aliceblue;
   font-size:36px;

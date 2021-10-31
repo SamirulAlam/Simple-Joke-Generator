@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import "./App.css"
+import useJoke from './useJoke';
 
 const App = () => {
-  const [joke, setJoke] = useState("");
+  const firstNameRef =useRef(null)
+  const lastNameRef =useRef(null)
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName]= useState("");
+  const joke=useJoke(firstName,lastName)
 
-  const fetchJoke =async ()=>{await fetch(`https://api.icndb.com/jokes/random?firstName=${firstName}&lastName=${lastName}`)
-    .then(res=>res.json())
-    .then(({value})=>{
-        setJoke(value.joke)
-    })}
+  const generateJoke=(e)=>{
+      e.preventDefault();
+      setFirstName(firstNameRef.current.value);
+      setLastName(lastNameRef.current.value);
+  }
+
   return (
     <div className="app">
         <div className="app__joke">
@@ -18,13 +22,12 @@ const App = () => {
         </div>
         <div className="app__form">
             <form>
-                <input type="text" value={firstName} onChange={e=>setFirstName(e.target.value)} />
-                <input type="text" value={lastName} onChange={e=>setLastName(e.target.value)} />
+                <input type="text" placeholder="First Name" ref={firstNameRef} />
+                <input type="text" placeholder="Last Name"  ref={lastNameRef} />
+                <button onClick={generateJoke}>click me</button>
             </form>
         </div>
-        <div className="app__button">
-        <button onClick={fetchJoke}>click me</button>
-        </div>
+
     </div>
   )
 }
